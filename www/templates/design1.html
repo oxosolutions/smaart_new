@@ -1,0 +1,151 @@
+<ion-view class="main_row" >
+	<ion-nav-title>
+		Survey name 1
+		<i class="icon ion-ios-arrow-right"></i>
+		Section name
+		<i class="icon ion-ios-arrow-right"></i>
+		question no
+	</ion-nav-title>
+	<style type="text/css">
+		.main_row{
+			background:none;
+		}
+		ion-view{
+			background-color:  #FFF;
+		}
+		ion-content > .scroll{
+			height: 100%
+		}
+		ion-content > .scroll > .layout-row,
+		ion-content > .scroll > .layout-row > .flex-25,
+		ion-content > .scroll > .layout-row > .flex-25 > .full-height,
+		ion-content > .scroll > .layout-row > .flex-25 > .full-height > .list,
+		ion-content > .scroll > .layout-row > .flex-75,
+		ion-content > .scroll > .layout-row > .flex-75 > .full-height,
+		ion-content > .scroll > .layout-row > .flex-75 > .full-height > .question{
+			height: inherit;
+		}
+		ul.list{
+			border-right: 1px solid #e8e8e8
+		}
+		.question-navigation{
+		    position: absolute;
+		    bottom: 0;
+		    margin-bottom: 40px;
+		    width: 100%;
+		    text-align: center;
+		        border-top: 1px solid #e8e8e8;
+		    background-color: white	
+		}
+		.flex-75{
+			position: relative;
+		}
+		.question-navigation > .block{
+			display: inline-block;
+			       padding: 2% 6%;
+		}
+		.block .icon{
+			font-size: 24px;
+    		color: #757575;
+		}
+		.question{
+			padding:20px;
+		}
+		.select-answer{
+			margin-top: 30px
+		}
+		.list > li > .list{
+			display: none;
+		}
+		.list > .active > .list{
+			display: block;
+		}
+		.item-icon-right .icon{
+			font-size: 18px
+		}
+		.list > .active > .item > i{
+			transform: rotate(90deg);
+		}
+		.bar-footer{
+			text-align: center;
+			color: white;
+		}
+		ion-content > .scroll > .layout-row > .flex-25 > .full-height > .list{
+			padding-top: 3px;
+		}
+	</style>
+	
+	<ion-content >
+		<div layout="row">
+			<div flex="25" style="background-color: #FFF;">
+				<ion-scroll direction="y" class="full-height">
+					<ul class="list" style="margin-bottom: 40px">
+					    <li ng-repeat="group in groupList">
+				      	  	<a class="item show-ques item-icon-right" href="javascript:;">
+						      
+						    	<p><strong>{{group.section_title}} </strong></p>
+						    	
+						    	<i class="icon ion-ios-arrow-right"></i>
+						    	
+						    </a>
+						    <ul class="list">
+						    	<li ng-repeat="question in group.questions">
+						    		<a class="item item-icon-right" href="javascript:;">
+						    			<p><strong>Q {{$index + 1}}: </strong> {{question.question_text}}</p>	
+						    			<i class="icon ion-ios-checkmark-empty" style="font-size: 30px;color: green" ng-show="{{question.question_key}}"></i>
+						    		</a>
+						    	</li>
+						    </ul>
+					    </li>
+					</ul>
+				</ion-scroll>
+			</div>
+			<div flex="75">
+				<ion-scroll direction="y" class="full-height" style="background-color: #FFF;height: calc(100% - 120px);">
+					<div class="question" style="margin-bottom: 40px">
+						<strong>Question 1.</strong>
+						<span question="QuesHtml"></span>
+						<span description="DescHtml"></span>
+					</div>
+					<div class="answer" style="margin-left: 20px;" answers="AnswerHtml">
+						
+					</div>
+				</ion-scroll>
+				
+				<div class="question-navigation">
+					<div class="block" ng-click="prev(nextIndex-1)" ng-disabled="nextIndex == '0'" style="cursor: pointer;">
+						<div>
+							<i class="icon ion-reply"></i>
+						</div>
+						<div>
+							Previous
+						</div>
+					</div>
+					<div class="block">
+						<div>
+							<i class="icon ion-reply-all"></i>
+						</div>
+						<div>
+							Stop
+						</div>
+					</div>
+					<div class="block" ng-click="next(nextIndex+1, currentIndex)" style="cursor: pointer;">
+						<div>
+							<i class="icon ion-forward"></i>
+						</div>
+						<div>
+							Next
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ion-content>
+	<!-- <div ng-include="'templates/footer.html'">
+		
+	</div> -->
+	<div class="bar bar-footer">
+		<div style="width: 100%">© All rights reserved with Dr. Ashish Joshi v4.2.0</div>
+		
+	</div>
+</ion-view>
