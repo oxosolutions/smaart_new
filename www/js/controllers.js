@@ -7,13 +7,13 @@ angular.module('smaart.controllers', ['ngCordova'])
     require: 'ngModel',
     link: function(scope, $el, attrs, ngModel) {
       if ($el[0].type === 'number') {
-        ngModel.$parsers.push(function(value) {
-          return value.toString();
-        });
+      		ngModel.$parsers.push(function(value) {
+	          return value.toString();
+	        });
 
-        ngModel.$formatters.push(function(value) {
-          return parseFloat(value, 10);
-        });
+	        ngModel.$formatters.push(function(value) {
+	          return parseFloat(value, 10);
+	        });
       }
     }
   }
@@ -231,10 +231,22 @@ angular.module('smaart.controllers', ['ngCordova'])
     		finishSurvey(localStorageService,row[0]);
     		$state.go('app.dashboard');
     	}
-    	if(row[currentIndex].question_type == 'checkbox'){
-    		var answerData = JSON.stringify($scope.answerData.answerCheckbox);
+    	if(row[currentIndex].question_type == 'repeater'){
+    		var answerObject = [];
+			$('.repeaterRow').each(function(i){
+				var questionsObjectArray = {};
+				$(this).find('.repeater_field').each(function(j){
+					questionsObjectArray[$(this).find('.textBoxSurvey').attr('key')] = $(this).find('select,input').val();
+				});
+				answerObject.push(questionsObjectArray);
+			});
+			var answerData = JSON.stringify(answerObject);
     	}else{
-    		var answerData = $scope.answerData.answer;
+    		if(row[currentIndex].question_type == 'checkbox'){
+	    		var answerData = JSON.stringify($scope.answerData.answerCheckbox);
+	    	}else{
+	    		var answerData = $scope.answerData.answer;
+	    	}
     	}
     	$scope.answerData.answer = '';
     	existingAnswer(row[nextIndex],dbservice,nextIndex,localStorageService,function(res,key){
@@ -270,6 +282,7 @@ angular.module('smaart.controllers', ['ngCordova'])
     		existingAnswer(row[prevIndex],dbservice,prevIndex,localStorageService,function(res,key){
 	    		if(res != false){
 	    			$scope.answerData = {};
+	    			$scope.answerData.answer = '';
 	    			if(isNumber(res.rows[0][key])){
 	    				$scope.answerData['answer'] = null;
 	    				$scope.answerData['answer'] = parseInt(res.rows[0][key]);
@@ -298,19 +311,39 @@ angular.module('smaart.controllers', ['ngCordova'])
     	}
     }
 
+    $scope.templateUrl = function(type,answers,key){
+		$scope.selectOptions = answers;
+		$scope.data = {
+			answer: key
+		}
+		return "surveyTemplate/repeater/"+type+".html";
+	}
+	
+	$scope.createClone = function(){
+		var cloneRow = $('.repeaterRow:last').clone();
+		$('.repeater').append(cloneRow);
+		$('.repeaterRow:last').find('select,input').val('');
+	}
+
     $(document).on('click','.show-ques', function() {
         $(this).parent().toggleClass('active');
         $(this).parent().siblings().removeClass('active');
     });
 
-
     function isNumber(n) {
 	  return !isNaN(parseFloat(n)) && isFinite(n);
 	}
+
     function drawQuestionAndAnswer(questionData, questionType){
+    	if(questionType == 'repeater'){
+    		var fields = JSON.parse(questionData.fields);
+    		$scope.fieldsList = fields;
+    	}
+
     	$scope.QuesHtml = "<p>"+questionData.question_text+"</p>";
 		$scope.DescHtml = "<p>"+questionData.question_desc+"</p>";
 		$scope.radioOptions = JSON.parse(questionData.answers)[0];
+		console.log($scope.radioOptions);
 		$scope.AnswerHtml = "<div ng-include src=\"'surveyTemplate/"+questionType+".html'\"></div>";
     }
 
@@ -352,7 +385,7 @@ angular.module('smaart.controllers', ['ngCordova'])
 			//insert new record
 			var dateForUnique = new Date(Date.now());
 			var uniqueKey = questionData.survey_id+''+dateForUnique.getFullYear()+''+(dateForUnique.getMonth()+1)+''+dateForUnique.getDay()+''+dateForUnique.getHours()+''+dateForUnique.getMinutes()+''+dateForUnique.getSeconds()+''+dateForUnique.getMilliseconds()+''+Math.floor(Math.random() * 10000000);
-			var Query = 'INSERT INTO survey_result_'+questionData.survey_id+'('+questionData.question_key+', survey_started_on, survey_submitted_by, survey_submitted_from, imei, unique_id, device_detail, created_by, created_at, last_field_id, survey_status, last_group_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)';
+			var Query = 'INSERT INTO survey_result_'+questionData.survey_id+'('+questionData.question_key+', survey_started_on, survey_submitted_by, survey_submitted_from, imei, unique_id, device_detail, created_by, created_at, last_field_id, survey_status, last_group_id, incomplete_name) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
 			dbservice.runQuery(Query,
 										[
 											answer, localStorage.get('startStamp'), 
@@ -363,6 +396,7 @@ angular.module('smaart.controllers', ['ngCordova'])
 											timeStamp(), QuestionIndex,
 											'incomplete',
 											questionData.group_id,
+											timeStamp()
 										],
 			function(res) {
 	          console.log("record created ");
@@ -506,6 +540,8 @@ angular.module('smaart.controllers', ['ngCordova'])
                                           if(key != 'created_at' && key != 'updated_at' && key != 'deleted_at'){
                                               if(key == 'answers'){
                                                 dataArray.push(JSON.stringify(val));
+                                              }else if(key == 'fields'){
+                                              	dataArray.push(JSON.stringify(val));
                                               }else{
                                                 try{
                                                   dataArray.push(val.toString());

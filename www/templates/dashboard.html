@@ -1,21 +1,15 @@
 <ion-view hide-nav-bar="true" view-title="Dashboard" style="background: url('img/dashboard.jpg');">
 	
   <ion-content class="homeBack">
-	<div class="row responsive-lg">
+	<div>
 		<div style="float: right !important; padding-right: 3%;">
 			<button class="button button-icon button-clear ion-navicon" menu-toggle="right" style="color:#FFF !important; float: right; font-size: 30px;"></button>
 		</div>
-		<div style="text-align:center;">
+		<div style="text-align:center;padding: 50px">
 			<img src="img/icon.png" style="width:20%;max-width:25%" />
 			<h3 style="color:#FFF;">Welcome {{name}}</h3>
 		</div>
-		<div class="row">
-			<div layout="row" layout-wrap layout-align="center stretch" style="width: 100%">
-				<div flex="100" class="btn-big orange" ng-click="openModal()" style="margin-bottom: 15px">
-		        	<i class="fa fa-bar-chart fa-2x"></i>
-		        	<span class="label bottom">Start Survey</span> 
-		        </div>
-		        <style type="text/css">
+		<style type="text/css">
 		        	.btn-big span{
 		        		font-size:16px;
 		        	}
@@ -47,44 +41,69 @@
 					.color-heading{
 						color: white
 					}
+					.layout-wrap .flex-20{
+						padding-right: 15px;
+
+					}
+					.layout-wrap .flex-20:last-child{
+						padding-right: 0px;
+					}
+					.bar-footer{
+			text-align: center;
+			color: white;
+		}
 		        </style>
-		        <div flex="100" layout="row" layout-align="center center" class="main-dashboard-div" style="margin-bottom: 15px">
-		        	<div flex="50" style="padding-right: 7.5px">
-		        		<a href="#/app/surveylist" >
-		        			<div class="btn-big orange" ng-click="goToSurvey()" style="background:#418bca">
-					        	<i class="fa fa-list fa-2x"></i>
-					        	<span class="label bottom">Survey List</span> 
-					        </div>
-				        </a>
-		        	</div>
-		        	<div flex="50" style="padding-left: 7.5px">
-		        		<a href="#/app/incomplete" >
-			        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#d95350">
-					        	<div style="color: white;text-align: center;"><i class="fa fa-exclamation-triangle fa-2x" ></i></div>
-					        	<span class="label bottom">Incomplete Survey</span> 
-					        </div>
-				        </a>
-		        	</div>
+		<div class="row" style="padding:0px 50px">
+			<div layout="row" layout-wrap layout-align="center stretch" style="width: 100%">
+				<div flex="20" >
+					<div class="btn-big orange" ng-click="openModal()">
+						<i class="fa fa-bar-chart fa-2x"></i>
+		        		<span class="label bottom">Start Survey</span> 
+					</div>
+		        	
 		        </div>
-		        <div flex="100" layout="row" class="main-dashboard-div" style="margin-bottom: 15px">
-		        	<div flex="50" style="padding-right: 7.5px">
-		        		<a href="#/app/completed">
-			        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#5db85b">
-					        	<div style="color: white;text-align: center"><i class="fa fa-upload fa-2x"></i></div
-					        	>
-					        	<span class="label bottom">Sync Results</span> 
-					        </div>
-				        </a>
-		        	</div>
-		        	<div flex="50" style="padding-left: 7.5px">
-		        		<a href="#/app/reactivate" >
-			        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#93a2bf">
-					        	<i class="fa fa-refresh fa-2x"></i>
-					        	<span class="label bottom">Update Application</span> 
-					        </div>
-				        </a>
-		        	</div>
-		        </div>
+		        
+		        <div flex="20" style="padding-right: 7.5px">
+	        		<a href="#/app/surveylist" >
+	        			<div class="btn-big orange" ng-click="goToSurvey()" style="background:#418bca">
+				        	<i class="fa fa-list fa-2x"></i>
+				        	<span class="label bottom">Survey List</span> 
+				        </div>
+			        </a>
+	        	</div>
+	        	<div flex="20" style="padding-left: 7.5px">
+	        		<a href="#/app/incomplete" >
+		        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#d95350">
+				        	<div style="color: white;text-align: center;"><i class="fa fa-exclamation-triangle fa-2x" ></i></div>
+				        	<span class="label bottom">Incomplete Survey</span> 
+				        </div>
+			        </a>
+	        	</div>
+		       <!--  <div flex="40" layout="row" layout-align="center center" class="main-dashboard-div" style="margin-bottom: 15px">
+		        	
+		        	
+		        </div> -->
+		        <div flex="20" style="padding-right: 7.5px">
+	        		<a href="#/app/completed">
+		        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#5db85b">
+				        	<div style="color: white;text-align: center"><i class="fa fa-upload fa-2x"></i></div
+				        	>
+				        	<span class="label bottom">Sync Results</span> 
+				        </div>
+			        </a>
+	        	</div>
+	        	<div flex="20" style="padding-left: 7.5px">
+	        		<a href="#/app/reactivate" >
+		        		<div class="btn-big orange" ng-click="goToSurvey()" style="background:#93a2bf">
+				        	<i class="fa fa-refresh fa-2x"></i>
+				        	<span class="label bottom">Update Application</span> 
+				        </div>
+			        </a>
+	        	</div>
+		        <!-- <div flex="40" layout="row" class="main-dashboard-div" style="margin-bottom: 15px">
+		        	
+		        	
+		        </div> -->
 
 			</div>
 	        
@@ -142,8 +161,9 @@
 </script>
 
   </ion-content>
-<div ng-include="'templates/footer.html'">
+<div class="bar bar-footer">
+		<div style="width: 100%">© All rights reserved with Dr. Ashish Joshi v4.2.0</div>
 		
-</div>
+	</div>
 </ion-view>
 

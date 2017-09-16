@@ -48,7 +48,8 @@ input{
 
 .homeBack{
 
-	background: url('../img/ghar.jpg') !important;
+	background-image: url('../img/xero.jpg') !important;
+	background-size: 100% 100%;
 }
 .survey_question{
 	border: 1px solid grey;

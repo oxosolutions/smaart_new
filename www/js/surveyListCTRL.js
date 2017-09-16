@@ -314,7 +314,7 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 
 .controller('stopSurvey', function($scope, $rootScope, $ionicLoading, localStorageService, $state, AppConfig, ionicDatePicker, $ionicPopup, dbservice){
 
-	$scope.StopSurvey = function(){
+	$scope.StopSurvey = function(currentIndex){
 		var myPopup = $ionicPopup.show({
 	     template: '<input type = "text" ng-model = "stopSurvey" style="color:#000 !important;">',
 	     title: 'Enter Incomplete Survey Name',
@@ -340,8 +340,8 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
       myPopup.then(function(res) {
       	 if(res != undefined){
       	 	var record_id = localStorageService.get('record_id');
-      	 	var Query = 'UPDATE survey_result_'+$state.params.surveyId+' SET incomplete_name = ?, last_field_id = ? WHERE id = ?';
-      	 	dbservice.runQuery(Query,[res, $state.params.QuestId-1, record_id],function(res) {
+      	 	var Query = 'UPDATE survey_result_'+$state.params.surveyid+' SET incomplete_name = ?, last_field_id = ? WHERE id = ?';
+      	 	dbservice.runQuery(Query,[res, currentIndex, record_id],function(res) {
               console.log("name updated");
               $state.go('app.dashboard');
             }, function (err) {
