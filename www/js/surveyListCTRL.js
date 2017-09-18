@@ -25,17 +25,28 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 	$scope.roleView = 'true';
 		$scope.notAuth = 'false';
 		$scope.detailActivate = 'true';
-	var getSurveys = 'SELECT * FROM survey_data';
+	var getSurveys = 'SELECT survey_data.*, survey_sections.*, survey_questions.*, survey_data.description as survey_description FROM survey_data left join survey_sections on survey_data.id = survey_sections.survey_id left join survey_questions on survey_data.id = survey_questions.survey_id';
+	var surveyList = [];
 	dbservice.runQuery(getSurveys,[],function(res){
-		var row = {};
+		for(var i=0; i < res.rows.length; i++) {
+			var item = res.rows.item(i);
+			var tempArray = {};
+			tempArray['name'] = item.name;
+			tempArray['description'] = item.survey_description;
+			tempArray['id'] = item.survey_id;
+			surveyList.push(tempArray);
+
+			// tempArray['']
+		}
+		console.log(res);
+		/*var row = {};
 		for(var i=0; i < res.rows.length; i++) {
           row[i] = res.rows.item(i);
       	}
       	$scope.list = row;
+      	console.log($scope.list);*/
 	});
 
-
-	
 
 	$scope.gotoSurvey = function(surveyID){
 		$state.go('app.survey',{'surveyId': surveyID+1});
