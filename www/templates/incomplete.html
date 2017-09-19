@@ -49,7 +49,7 @@
 	</div>
 </ion-view> -->
 
-<ion-view class="" >
+<ion-view class="" view-title="In-Complete Survey List">
 <style type="text/css">
 ion-content.padding-1{
 	background-color: #e8e8e8;
@@ -65,6 +65,9 @@ ion-content > .scroll{
     width: 100%;
    
     height: 100%;
+	}
+	.aione-card .card-content{
+		height: calc(100% - 41px );padding: 0;
 	}
 	.aione-card .aione-header{
 		border-bottom: 1px solid #e8e8e8;
@@ -84,6 +87,16 @@ ion-content > .scroll{
 	        overflow: hidden;
     text-overflow: ellipsis;
 	}
+	.incomplete-list li{
+		border:1px solid #e8e8e8;margin-bottom: 10px;padding: 10px
+	}
+	.incomplete-list li > div{
+		display: inline-block;
+		width: 32.5%;
+	}
+
+	/**/
+
 </style>
 <!-- 	<ion-nav-bar class="bar-stable bar-positive" style="position:fixed; width:100%; padding-bottom:2%;">
   		<button class="button button-icon button-clear ion-navicon" menu-toggle="right" style="color:#FFF !important; float: right; font-size: 30px; z-index:999;"></button>
@@ -126,19 +139,37 @@ ion-content > .scroll{
 
 
 	<ion-nav-title>
-		Survey List
+		In-Complete Survey List
 	
 	</ion-nav-title>
 	
 	<ion-content class="padding-1">
 		<div class="aione-card">
 			<div class="aione-header">
-				Survey List
+				In-Complete Survey List
 			</div>
-			<div class="row" style="height: calc(100% - 41px );padding: 0;">
+			<div class="row card-content" style="">
 				<div class="col" style="border-right: 1px solid #e8e8e8;padding: 0">
 					<ul class="list">
-					    <li class="item  waves-effect" style="padding: 6px">
+					    <li class="item  waves-effect" style="padding: 6px" ng-repeat="survey in list">
+						   <div class="row" ng-click="showIncomplete(survey.id)">
+						   		<div class="col col-60">
+						   			<div class="aione-title">{{survey.name}}</div>
+						   			<div class="aione-description">{{survey.description}}</div>
+						   		</div>
+						   		<div class="col">
+						   			<div style="height: 20px">
+						   				<span style="float: right">15 apr</span>
+						   				<span style="clear: both"></span>
+						   			</div>
+						   			<div>
+						   				<Span style="float: right;color: white;background-color: green;padding: 3px 5px" ng-init="incompleteCount(survey.id)">{{surveyData.incomplete[survey.id]}} incomplete</Span>
+						   				<span style="clear: both"></span>
+						   			</div>
+						   		</div>
+						   </div>
+					    </li>
+					    <!-- <li class="item  waves-effect" style="padding: 6px">
 						   <div class="row">
 						   		<div class="col col-60">
 						   			<div class="aione-title">name of survey</div>
@@ -173,38 +204,17 @@ ion-content > .scroll{
 						   			</div>
 						   		</div>
 						   </div>
-					    </li>
-					     <li class="item  waves-effect" style="padding: 6px">
-						   <div class="row">
-						   		<div class="col col-60">
-						   			<div class="aione-title">name of survey</div>
-						   			<div class="aione-description">description of survey</div>
-						   		</div>
-						   		<div class="col">
-						   			<div style="height: 20px">
-						   				<span style="float: right">15 apr</span>
-						   				<span style="clear: both"></span>
-						   			</div>
-						   			<div>
-						   				<Span style="float: right;color: white;background-color: green;padding: 3px 5px">12 incomplete</Span>
-						   				<span style="clear: both"></span>
-						   			</div>
-						   		</div>
-						   </div>
-					    </li>
+					    </li> -->
 					</ul>
 					
 				</div>
-				<div class="col" style="padding: 0">
-					<ul>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						<li style="border:1px solid #e8e8e8;margin-bottom: 10px">asahgsh</li>
-						
+				<div class="col" style="padding: 10px">
+					<ul class="incomplete-list">
+						<li ng-repeat="result in PendingSurvey" ng-click="startCont(result.id, setSurveyID)" style="cursor: pointer;">
+							<div>{{result.incomplete_name}}</div>
+							<div>{{result.survey_started_on}}</div>
+							<!-- <div>91% completed</div> -->
+						</li>						
 					</ul>
 				</div>
 			</div>

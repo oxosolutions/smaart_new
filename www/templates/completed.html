@@ -1,4 +1,4 @@
-<ion-view view-title="Completed Survey List" class="main_row" >
+<!-- <ion-view view-title="Completed Survey List" class="main_row" >
 	<ion-nav-bar class="bar-stable bar-positive" style="position:fixed; width:100%; padding-bottom:2%;">
 	  		<button class="button button-icon button-clear ion-navicon" menu-toggle="right" style="color:#FFF !important; float: right; font-size: 30px; z-index:999;"></button>
 	</ion-nav-bar>
@@ -13,18 +13,18 @@
 					<div class="qus_head">
 						<p>Completed Survey List</p>
 					</div>
-						<div class="list">
-							<label class="item item-input item-select">
-							    <div class="input-label drop" style="width: 100%;max-width: 100%;z-index: 999999;">
-									Select Survey
-							    </div>
-							    <select ng-change="surveyChange()" name="surveySelect" ng-model="$parent.surveySelect">
-							      	<option ng-repeat="(key, value) in list" value="{{key}}">{{value}}</option>
-							    </select>
-							</label>
-						</div>
+					<div class="list">
+						<label class="item item-input item-select">
+						    <div class="input-label drop" style="width: 100%;max-width: 100%;z-index: 999999;">
+								Select Survey
+						    </div>
+						    <select ng-change="surveyChange()" name="surveySelect" ng-model="$parent.surveySelect">
+						      	<option ng-repeat="(key, value) in list" value="{{key}}">{{value}}</option>
+						    </select>
+						</label>
+					</div>
 					<div class="qus_footer">
-						<!-- <p>Maxime quis.</p> -->
+						
 					</div>
 				</div>
 			</div>
@@ -48,6 +48,92 @@
 	</div>
 </ion-view>
 
-
+ -->
 
 	
+
+<ion-view class="" >
+<style type="text/css">
+	.bar-subheader{
+		background-color: #e6e6e6;
+	}
+	.bar-subheader > .row{
+		color: #757575;
+	    font-weight: 900;
+	    font-size: 13px;
+	}
+	.has-header{
+		top: 88px;
+	}
+	.item .aione-title{
+		color: #454545;
+	    font-weight: 700;
+	    font-size: 16px;
+	        overflow: hidden;
+    text-overflow: ellipsis;
+	}
+	.item .aione-description{
+		color: #999;
+	    font-weight: 300;
+	    font-size: 15px;
+	        overflow: hidden;
+    text-overflow: ellipsis;
+	}
+	.tabs{
+		bottom: 44px;
+		height: 69px;
+	}
+	.aione-btn{
+		    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    background-color: rgb(56, 126, 245);
+    color: white;
+	}
+</style>
+
+
+
+	<ion-nav-title>
+		Survey List
+	
+	</ion-nav-title>
+	<div class="bar bar-subheader">
+	 	<div class="row">
+			<div class="col col-40">NAME OF SURVEY</div>
+			<div class="col" style="text-align: center">CREATED AT</div>
+			<div class="col" style="text-align: center">SECTIONS</div>
+			<div class="col " style="text-align: center">TOTAL QUESTIONS</div>
+	 	</div>
+	</div>
+	<ion-content>
+		<ul class="list">
+			
+		    <li class="item  waves-effect" style="padding: 0px" ng-repeat="(key, value) in list">
+			    <ion-checkbox ng-model="filter.key">
+			   		<div class="row" >
+			   			<div class="col col-40">
+
+							<div class="aione-title">{{value}}</div>
+							<div class="aione-description">ajsdjasdjhasdjkhasdjh</div>
+						</div>
+						<div class="col">
+							<div class="aione-title" style="line-height: 40px;text-align: center">
+								sdkfjksdfgjdfgjdf
+							</div>
+						</div>
+						<div class="col" style="line-height: 40px;text-align: center">sdjfgjhdfgh</div>
+						<div class="col" style="line-height: 40px;text-align: center">sdmfgjdxfgjd</div>
+			   		</div>
+						
+			 	</ion-checkbox>
+		    </li>
+		</ul>
+ 	</ion-content>
+ 	<div class="tabs" style="padding: 10px;">
+		<a href="" class="aione-btn">Sync Survey</a>
+	</div>
+ 	<div class="bar bar-footer">
+		<div style="width: 100%">© All rights reserved with Dr. Ashish Joshi v4.2.0</div>
+	</div>
+</ion-view>

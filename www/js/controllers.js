@@ -193,9 +193,15 @@ angular.module('smaart.controllers', ['ngCordova'])
           });
           $scope.groupList = sectionsArray;
           /*console.log(row);*/
-          drawQuestionAndAnswer(row[0],row[0].question_type);
-          $scope.nextIndex = 0;
-          $scope.currentIndex = 0;
+          var lastQuestId = localStorageService.get('lastquestId');
+          if(lastQuestId != null){
+              var continueId = lastQuestId;
+          }else{
+              var continueId = 0;
+          }
+          drawQuestionAndAnswer(row[continueId],row[continueId].question_type);
+          $scope.nextIndex = parseInt(continueId)+1;
+          $scope.currentIndex = continueId;
           window.row = row;
           existingAnswer(row[0],dbservice,0,localStorageService,function(res, key){
 				if(res != false){
@@ -384,11 +390,13 @@ angular.module('smaart.controllers', ['ngCordova'])
 		}else{
 			//insert new record
 			var dateForUnique = new Date(Date.now());
+      var dt = new Date;
+      var startedTime = dt.getFullYear()+''+(dt.getMonth()+1)+''+dt.getDay()+''+dt.getHours()+''+dt.getMinutes()+''+dt.getSeconds()+''+dt.getMilliseconds();
 			var uniqueKey = questionData.survey_id+''+dateForUnique.getFullYear()+''+(dateForUnique.getMonth()+1)+''+dateForUnique.getDay()+''+dateForUnique.getHours()+''+dateForUnique.getMinutes()+''+dateForUnique.getSeconds()+''+dateForUnique.getMilliseconds()+''+Math.floor(Math.random() * 10000000);
 			var Query = 'INSERT INTO survey_result_'+questionData.survey_id+'('+questionData.question_key+', survey_started_on, survey_submitted_by, survey_submitted_from, imei, unique_id, device_detail, created_by, created_at, last_field_id, survey_status, last_group_id, incomplete_name) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)';
 			dbservice.runQuery(Query,
 										[
-											answer, localStorage.get('startStamp'), 
+											answer, startedTime, 
 											localStorage.get('userId'),'app','NULL',uniqueKey, 
 											//JSON.stringify($cordovaDevice.getDevice()),
 											'device_details',

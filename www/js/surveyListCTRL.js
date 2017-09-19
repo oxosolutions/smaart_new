@@ -25,28 +25,36 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 	$scope.roleView = 'true';
 		$scope.notAuth = 'false';
 		$scope.detailActivate = 'true';
-	var getSurveys = 'SELECT survey_data.*, survey_sections.*, survey_questions.*, survey_data.description as survey_description FROM survey_data left join survey_sections on survey_data.id = survey_sections.survey_id left join survey_questions on survey_data.id = survey_questions.survey_id';
-	var surveyList = [];
+	var getSurveys = 'SELECT * FROM survey_data';
+	var surveyList = {};
 	dbservice.runQuery(getSurveys,[],function(res){
+		var totalGroupd = 0;
 		for(var i=0; i < res.rows.length; i++) {
 			var item = res.rows.item(i);
 			var tempArray = {};
 			tempArray['name'] = item.name;
-			tempArray['description'] = item.survey_description;
+			tempArray['description'] = item.description;
 			tempArray['id'] = item.survey_id;
-			surveyList.push(tempArray);
-
-			// tempArray['']
+			surveyList[item.survey_id] = tempArray;
 		}
-		console.log(res);
-		/*var row = {};
-		for(var i=0; i < res.rows.length; i++) {
-          row[i] = res.rows.item(i);
-      	}
-      	$scope.list = row;
-      	console.log($scope.list);*/
+      	$scope.list = surveyList;
 	});
+	$scope.survey = {};
+	$scope.totalSections = function(surveyid){
+		$scope.survey['sectionCount'] = {};
+		var countSectionQuery = 'SELECT count(*) as count FROM survey_sections WHERE survey_id = ?';
+		dbservice.runQuery(countSectionQuery,[surveyid],function(res){
+			$scope.survey['sectionCount'][surveyid] = res.rows.item(0).count;
+		});
+	}
 
+	$scope.totalQuestions = function(surveyid){
+		$scope.survey['questionCount'] = {};
+		var countQuestionQuery = 'SELECT count(*) as count FROM survey_questions WHERE survey_id = ?';
+		dbservice.runQuery(countQuestionQuery,[surveyid.toString()],function(res){
+			$scope.survey['questionCount'][surveyid] = res.rows.item(0).count;
+		});
+	}
 
 	$scope.gotoSurvey = function(surveyID){
 		$state.go('app.survey',{'surveyId': surveyID+1});
@@ -351,7 +359,7 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
       myPopup.then(function(res) {
       	 if(res != undefined){
       	 	var record_id = localStorageService.get('record_id');
-      	 	var Query = 'UPDATE survey_result_'+$state.params.surveyId+' SET incomplete_name = ?, last_field_id = ? WHERE id = ?';
+      	 	var Query = 'UPDATE survey_result_'+$state.params.surveyid+' SET incomplete_name = ?, last_field_id = ? WHERE id = ?';
       	 	dbservice.runQuery(Query,[res, currentIndex, record_id],function(res) {
               console.log("name updated");
               $state.go('app.dashboard');
@@ -365,8 +373,8 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 	}
 })
 .controller('incompleteSurveyCTLR', function($scope, $ionicLoading, localStorageService, $state, dbservice){
+
 	localStorageService.set('RuningSurvey',null);
-	// console.log(localStorageService.get('SurveyList'));
 	var getSurveys = 'SELECT * FROM survey_data';
 	dbservice.runQuery(getSurveys,[], function(res){
 		var row = {};
@@ -374,18 +382,48 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
           	row[i] = res.rows.item(i)
       	}
       	var SurveyData = row;
-		var SurveyListSelect = {};
+		var SurveyListSelect = [];
 		angular.forEach(SurveyData, function(value, key){
-			
-			SurveyListSelect[value.survey_id] = value.name;
+			var tempArray = {};
+			tempArray['name'] = value.name;
+			tempArray['description'] = value.description;
+			tempArray['id'] = value.survey_id;
+			SurveyListSelect.push(tempArray);
 		});
 		$scope.list = SurveyListSelect;
 	});
+	$scope.surveyData = {};
+	$scope.incompleteCount = function(surveyid){
+		$scope.setSurveyID = surveyid;
+		$scope.surveyData['incomplete'] = {};
+		var couuntQuery = 'SELECT count(*) as count FROM survey_result_'+surveyid+' WHERE survey_status = ?';
+		dbservice.runQuery(couuntQuery,['incomplete'], function(res){
+			$scope.surveyData['incomplete'][surveyid] = res.rows.item(0).count;
+		});
+	}
 
-	$scope.surveyChange = function(){
+	$scope.startCont = function(recordId, SurveyID){
+		var Query = 'SELECT last_field_id, last_group_id, completed_groups FROM survey_result_'+SurveyID+' WHERE id = ?';
+		dbservice.runQuery(Query,[recordId],function(res) {	
+			var lastIds = res.rows.item(0);
+			localStorageService.set('completedGroups',JSON.parse(res.rows.item(0).completed_groups));
+			localStorageService.set('record_id',recordId);
+			localStorageService.set('lastquestId',lastIds.last_field_id);
+			$state.go('app.survey',{'surveyid':SurveyID});
+			/*if(lastIds.last_group_id != null && lastIds.last_group_id != ''){
+				$state.go('app.survey',{'surveyId':SurveyID, 'QuestId': lastIds.last_field_id+1, 'groupId': lastIds.last_group_id});
+			}else{
+				$state.go('app.surveyGroup',{id:SurveyID});
+			}*/
+        }, function (err) {
+          console.log(err);
+        });		
+	}
+
+	$scope.showIncomplete = function(surveyid){
 		var sendArrayList = {};
 		var SurveyID = $scope.$$childTail.surveySelect;
-		var Query = 'SELECT id, incomplete_name, survey_started_on FROM survey_result_'+SurveyID+' WHERE survey_status = ?';
+		var Query = 'SELECT * FROM survey_result_'+surveyid+' WHERE survey_status = ?';
 		dbservice.runQuery(Query,['incomplete'],function(res) {	
 			var row = {};
 			for(var i=0; i<res.rows.length; i++) {
@@ -398,22 +436,7 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 	}
 
 
-	$scope.continue = function(recordId){
-		var SurveyID = $scope.$$childTail.surveySelect;
-		var Query = 'SELECT last_field_id, last_group_id, completed_groups FROM survey_result_'+SurveyID+' WHERE id = ?';
-		dbservice.runQuery(Query,[recordId],function(res) {	
-			var lastIds = res.rows.item(0);
-			localStorageService.set('completedGroups',JSON.parse(res.rows.item(0).completed_groups));
-			localStorageService.set('record_id',recordId);
-			if(lastIds.last_group_id != null && lastIds.last_group_id != ''){
-				$state.go('app.survey',{'surveyId':SurveyID, 'QuestId': lastIds.last_field_id+1, 'groupId': lastIds.last_group_id});
-			}else{
-				$state.go('app.surveyGroup',{id:SurveyID});
-			}
-        }, function (err) {
-          console.log(err);
-        });		
-	}
+
 })
 
 

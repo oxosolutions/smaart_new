@@ -104,6 +104,7 @@ angular.module('smaart.dashboard', ['ngCordova'])
   		localStorageService.set('ContinueKey',undefined);
   		localStorageService.set('RuningSurvey',null);
   		localStorageService.set('record_id',null);
+      localStorageService.set('lastquestId',null);
   		window.currentTimeStamp = null;
   		window.surveyStatus = 'new';
       // $state.go('app.surveyGroup',{id:surveyid});
