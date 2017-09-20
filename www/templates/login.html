@@ -1,4 +1,4 @@
-<ion-view view-title="Login" style="background: url('img/background_img_1.jpg'); background-position: 0px -100px;">
+<!-- <ion-view view-title="Login" style="background: url('img/background_img_1.jpg'); background-position: 0px -100px;">
    
 
     <ion-content>
@@ -18,16 +18,7 @@
             <label class="item item-input loginLabel" style="background-color: white !important;margin: 10px">
                 <input type="text" placeholder="Username or Email" name="email" ng-model="data.email" style="color: #666 !important">
             </label>
-            <!-- <md-input-container class="md-block">
-                <label>Username or Email</label>
-                <input name="email" required type="email" name="clientEmail" ng-model="data.email"
-                   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>Password</label>
-                <input name="password" required type="password" name="clientEmail" ng-model="data.password"
-                   minlength="10" maxlength="100" />
-            </md-input-container> -->
+         
             <label class="item item-input loginLabelPass" style="background-color: white !important;margin: 10px">
                 <input type="password" placeholder="Password" name="password" ng-model="data.password" style="color: #666 !important">
             </label>
@@ -36,4 +27,99 @@
     
 
     </ion-content>
+</ion-view> -->
+
+<ion-view>
+    <style type="text/css">
+        #background {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50%;
+            background-color: #006BCB;
+            z-index: 1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 2;
+            padding: 30px;
+            text-align: center;
+            
+        }
+        ion-content{
+            background-color: #e8e8e8;
+        }
+        ion-content > .scroll{
+            height: 100%;
+
+        }
+        .aione-login-card{
+            position: fixed;
+            top: 15%;
+            bottom: 15%;
+            right: 20%;
+            left: 20%;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12);
+        }
+        .loginLogo{
+            height: 160px;
+        }
+        .item-checkbox{
+            display: inline-block;
+            border: none;
+            float: left
+        }
+        md-input-container label{
+            font-size: 20px
+        }
+         md-input-container input{
+                color: #676767 !important;
+    font-size: 20px;
+    height: 40px;
+    line-height: 32px;
+
+        }
+        md-input-container:not(md-input-invalid).md-input-focused .md-input
+        {
+            border-color: #006BCB !important;
+        }
+        md-input-container:not(md-input-invalid).md-input-focused label{
+            color: #006BCB !important;
+        }
+    </style>
+    <ion-content>
+        <div id="content">
+            <div class="aione-login-card">
+                <div>
+                    <img src="img/icon.png" class="loginLogo" />    
+                    <h3>Smaart Framework</h3>
+                </div>
+                <div>
+                    <md-input-container style="width: 100%;text-align: left">
+                        <label>Username or Email</label>
+                        <input type="text" name="email" ng-model="data.email" >
+                    </md-input-container>
+                    <md-input-container style="width: 100%;text-align: left">
+                        <label>Password</label>
+                        <input type="password" name="password" ng-model="data.password">
+                    </md-input-container>   
+                </div>
+                <dir style="padding: 0">
+                    <ion-checkbox ng-model="filter.red">REMEMBER ME</ion-checkbox>
+                     <button class="button button-large" ng-click="doLogin()" style="float: right; background-color: #006BCB;color: white;padding: 0 60px">
+                      Login Now
+                    </button>
+                    <div style="clear: both"></div>
+                </dir>
+                 
+            </div>
+        </div>
+        <div id="background"></div>
+    </ion-content>
 </ion-view>
+
+

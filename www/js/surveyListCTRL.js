@@ -442,6 +442,23 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 
 .controller('CompleteSurveyCTLR', function($scope,$rootScope, $ionicLoading, localStorageService, $state, exportS, $ionicPopup, $cordovaDevice, dbservice){
 	
+	$scope.surveyChange = function(surveyid){
+		$scope.selectedSurvey = surveyid;
+		var sendArrayList = {};
+		var Query = 'SELECT id, incomplete_name, survey_started_on FROM survey_result_'+surveyid+' WHERE survey_status = ?';
+		dbservice.runQuery(Query,['completed'],function(res) {	
+			console.log(res);
+			var row = {};
+			for(var i=0; i<res.rows.length; i++) {
+	            row[i] = res.rows.item(i)
+	        }		
+			$scope.PendingSurvey = row;
+        }, function (err) {
+          console.log(err);
+        });
+        //console.log('tst');
+	}
+
 	var getSurveys = 'SELECT * FROM survey_data';
 	dbservice.runQuery(getSurveys,[], function(res){
 		var row = {};
@@ -449,31 +466,25 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
           	row[i] = res.rows.item(i)
       	}
       	var SurveyData = row;
+      	$scope.list = row;
 		var SurveyListSelect = {};
 		angular.forEach(SurveyData, function(value, key){
 			
 			SurveyListSelect[value.survey_id] = value.name;
 		});
-		$scope.list = SurveyListSelect;
+		// $scope.list = SurveyListSelect;
 	});
 
-	$scope.surveyChange = function(){
-		var sendArrayList = {};
-		var SurveyID = $scope.$$childTail.surveySelect;
-		var Query = 'SELECT id, incomplete_name, survey_started_on FROM survey_result_'+SurveyID+' WHERE survey_status = ?';
-		dbservice.runQuery(Query,['completed'],function(res) {	
-			var row = {};
-			for(var i=0; i<res.rows.length; i++) {
-	            row[i] = res.rows.item(i)
-	        }		
-	       	console.log(row);
-			$scope.PendingSurvey = row;
-        }, function (err) {
-          console.log(err);
-        });
-	}
+
 
 	$scope.exportSurv = function(){
+		if($scope.selectedSurvey == undefined){
+			$ionicLoading.show({
+		      template: 'Please select the survey!',
+		      noBackdrop: false,
+		      duration: 2000
+		    });
+		}
 		/*if(window.Connection) {
 	      	if(navigator.connection.type == Connection.NONE) {
 	        	$ionicPopup.confirm({
@@ -483,7 +494,7 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 	          		
 	        	});
 	      	}else{*/
-	      		var Query = 'SELECT * from survey_result_'+$scope.$$childTail.surveySelect;
+	      		var Query = 'SELECT * from survey_result_'+$scope.selectedSurvey;
 				dbservice.runQuery(Query,[],function(res) {	
 					if(res.rows.length == 0){
 						$ionicLoading.show({
@@ -528,7 +539,7 @@ angular.module('smaart.surveyListCTRL', ['ngCordova'])
 						        }
 						        var formData = new FormData;
 						        formData.append('survey_data',JSON.stringify(row));
-						        formData.append('survey_id',$scope.$$childTail.surveySelect);
+						        formData.append('survey_id',$scope.selectedSurvey);
 						        formData.append('activation_code',localStorageService.get('ActivationCode'));
 						        formData.append('lat_long',JSON.stringify({lat: window.lat, long: window.long}));
 						        exportS.exportSurvey(formData).then(function(result){

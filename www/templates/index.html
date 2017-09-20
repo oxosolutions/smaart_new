@@ -1,4 +1,4 @@
-<style type="text/css">
+<!-- <style type="text/css">
 .index-title:after{
 	padding-bottom: 10px
 	
@@ -24,4 +24,87 @@
 			
 		</div>
 	</div>
-</ion-content>
+</ion-content> -->
+
+
+<ion-view>
+    <style type="text/css">
+       
+
+       
+        ion-content{
+            background-color: #e8e8e8;
+        }
+        ion-content > .scroll{
+            height: 100%;
+
+        }
+        .aione-activate-card{
+            position: fixed;
+            top: 1%;
+            bottom: 1%;
+            right: 1%;
+            left: 1%;
+            background-color: white;
+            
+            box-shadow: 0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12);
+        }
+       .index-title{
+       		color: white;
+       		font-weight: 300
+
+       }
+        md-input-container label{
+            font-size: 20px
+        }
+         md-input-container input{
+                color: #676767 !important;
+    font-size: 20px;
+    height: 40px;
+    line-height: 32px;
+
+        }
+        md-input-container:not(md-input-invalid).md-input-focused .md-input
+        {
+            border-color: #006BCB !important;
+        }
+        md-input-container:not(md-input-invalid).md-input-focused label{
+            color: #006BCB !important;
+        }
+     
+    </style>
+    <ion-content>
+      
+            <div class="aione-activate-card">
+                
+                 <div class="row" style="padding: 0;height: 100%;">
+                 	<div class="col col-40" style="background-color:#00b9f5;height: 100%;    padding: 15% 4%;">
+                 		<div style="text-align: center;margin-bottom: 30px">
+							<img src="img/icon.png" style="height: 200px">
+							<h2 class="index-title">Smaart Framework</h2>
+						</div>
+						<div style="color: white">
+							
+							<h2 class="index-title">Steps to activate the app</h2>
+							<div style="font-size: 20px">
+								1. Go to the website ,open profile and get activation code.<br>
+								2. Press activate button below and paste the code in the dialog box.
+
+							</div>
+						</div>
+                 	</div>
+                 	<div class="col" style=" padding: 25% 4%;">
+                 		<md-input-container style="width: 100%;text-align: left">
+	                        <label>Enter Activation Code</label>
+	                        <input type="password" ng-model="data.wifi" name="activationCode">
+	                    </md-input-container>
+	                    <button class="button button-large"  style="float: right; background-color: #006BCB;color: white;width: 100%;font-size: 30px;font-weight: 600;line-height: 72px;" ng-click="Activate(data)">
+	                      Activate Now
+	                    </button>
+                 	</div>
+                 </div>
+            </div>
+        
+    </ion-content>
+</ion-view>
+

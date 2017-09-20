@@ -47,12 +47,12 @@
 		
 	</div>
 </ion-view>
-
  -->
+
 
 	
 
-<ion-view class="" >
+<!-- <ion-view class="" >
 <style type="text/css">
 	.bar-subheader{
 		background-color: #e6e6e6;
@@ -136,4 +136,117 @@
  	<div class="bar bar-footer">
 		<div style="width: 100%">© All rights reserved with Dr. Ashish Joshi v4.2.0</div>
 	</div>
+</ion-view> -->
+
+
+
+<ion-view class="" view-title="In-Complete Survey List">
+<style type="text/css">
+ion-content.padding-1{
+	background-color: #e8e8e8;
+	padding: 10px !important;
+}
+ion-content > .scroll{
+	height: 100%;
+}
+	.aione-card{
+		background-color: white;
+    box-shadow: 0 4px 5px -2px rgba(0,0,0,.2),0 7px 10px 1px rgba(0,0,0,.14),0 2px 16px 1px rgba(0,0,0,.12);
+    position: fixed;
+    width: 100%;
+   
+    height: 100%;
+	}
+	.aione-card .card-content{
+		height: calc(100% - 41px );padding: 0;
+	}
+	.aione-card .aione-header{
+		border-bottom: 1px solid #e8e8e8;
+    	padding: 10px;
+	}
+	.item .aione-title{
+		color: #454545;
+	    font-weight: 700;
+	    font-size: 16px;
+	        overflow: hidden;
+    text-overflow: ellipsis;
+	}
+	.item .aione-description{
+		color: #999;
+	    font-weight: 300;
+	    font-size: 15px;
+	        overflow: hidden;
+    text-overflow: ellipsis;
+	}
+	.incomplete-list li{
+		border:1px solid #e8e8e8;margin-bottom: 10px;padding: 10px
+	}
+	.incomplete-list li > div{
+		display: inline-block;
+		width: 32.5%;
+	}
+	.aione-btn{
+		    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    background-color: rgb(56, 126, 245);
+    color: white;
+    display: block;
+    line-height: 40px
+	}
+	
+
+</style>
+
+
+	<ion-nav-title>
+		Complete Survey List
+	
+	</ion-nav-title>
+	
+	<ion-content class="padding-1">
+		<div class="aione-card">
+			<div class="aione-header">
+				Complete Survey List
+			</div>
+			<div class="row card-content" style="">
+				<div class="col col-50" style="border-right: 1px solid #e8e8e8;padding: 0">
+					<ul class="list">
+					    <li class="item  waves-effect" style="padding: 6px" ng-repeat="survey in list">
+						   <div class="row" style="cursor: pointer;">
+						   		<div class="col col-60" ng-click="surveyChange(survey.survey_id)">
+						   			<div class="aione-title">{{survey.name}}</div>
+						   			<div class="aione-description">{{survey.description}}</div>
+						   		</div>
+						   		<!-- <div class="col">
+						   			<div style="height: 20px">
+						   				<span style="float: right">15 apr</span>
+						   				<span style="clear: both"></span>
+						   			</div>
+						   			
+						   		</div> -->
+						   </div>
+					    </li>
+					   
+					</ul>
+					
+				</div>
+				<div class="col" style="padding: 0;position: relative;height: calc(100% - 61px);">
+					<ion-scroll direction="y" style="    height: 100%;">
+					<ul class="incomplete-list" style="padding: 10px;height: 100%">
+						<li style="cursor: pointer;" ng-repeat="survelist in PendingSurvey">
+							<div>{{survelist.incomplete_name}}</div>
+							<div>{{surveylist.survey_started_on}}</div>
+						</li>
+					</ul>
+					</ion-scroll>
+					<div style="position: absolute;bottom: -61px;left:0;right:0;border-top: 1px solid #e8e8e8;padding: 10px">
+						
+							<a href="" class="aione-btn" ng-click="exportSurv()">Sync Survey</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+ 	</ion-content>
 </ion-view>
